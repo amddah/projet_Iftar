@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="./style/badge.css">
+</head>
+<body>
+    
+    <section>
+        <div id="logo">
+            <div id="L1"><img src="./images/uca.png" alt=""></div>
+            <div id="L2"><a href="mailto:omarlamine2304gmail.com">Contactez Nous</a></div>
+        </div>
+        <!-- entrer CNE-->
+        <div id="form">
+            <form action="/badge" method="POST">
+                <label for="QR" > Entrer Votre CNE : </label><br>
+                <input type="text" class="qr_text" id="QR" name="qr_text" > <br><br>
+                <input name="btnValide" id="btn"  type="submit" value="Vérifier">
+            </form><br>
+        </div> 
+    </section>
+    <div id="remarque">
+        <% if (remarque) { %>
+            <p><%= remarque %></p>
+            <p><%= remarque2 %></p>
+          <% } %>
+    </div>
+    
+</body>
+</html>

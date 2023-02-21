@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>generer le badge</title>
+    <link rel="stylesheet" href="./style/badge.css">
+    
+</head>
+<body> 
+    <section>
+        <div id="logo">
+            <div id="L1"><img src="./images/uca.png" alt=""></div>
+            <div id="L2"><a href="mailto:omarlamine2304gmail.com">Contactez Nous</a></div>
+    
+        </div>
+    </section>
+    <div id="remarque"></div>
+    <!--generer badge-->
+
+<div id="badge_btn">
+<div id="b_btn">
+    <div id="partie1">
+        <div class="badge">
+            <div id="tete">
+                <img src="./images/j2.png" alt="">
+                <img src="./images/uca.png" alt="">
+            </div>
+            <div id="ligne"></div><br><br>
+            <div id="elements">
+                <div id="txt">
+                <!--<h3><span id="faculte" class="element"></span></h3><br>-->
+                    <img src="<%= imageSrc %>" alt="My Image"id="image">
+                </div>
+                <div>
+                    <div class="qr_code"></div><br>
+                    <h3><span id="cne"class="element">CNE : <%= cne %></span></h3><br>
+                    <h3><span id="id"class="element">Numéro : <%= id %></span></h3><br>
+                </div>
+            </div><br>
+        </div>
+    </div>
+    <div id="partie2">
+        <div class="badge">
+            <h2>بطاقة الصائم</h2>
+            <table>
+                <caption></caption>
+                <tr>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mer</th>
+                    <th>Jeu</th>
+                    <th>Ven</th>
+                    <th>Sam</th>
+                    <th>Dim</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>22/3</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>25</td>
+                    <td>26</td>
+                </tr>
+                <tr>
+                    <td>27</td>
+                    <td>28</td>
+                    <td>29</td>
+                    <td>30</td>
+                    <td>31</td>
+                    <td>01/4</td>
+                    <td>02</td>
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>04</td>
+                    <td>05</td>
+                    <td>06</td>
+                    <td>07</td>
+                    <td>08</td>
+                    <td>09</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<input type="button" value="télécharger"id="imprimer"onclick="imprimer()">
+</div>
+</div> 
+    <script type="text/javascript">
+
+        //les variables
+        const logo=document.getElementById("logo");
+        const remarque=document.getElementById("remarque");
+        const imprime=document.getElementById("imprimer");
+        const qrcode=document.querySelector(".qr_code");
+    
+        //fonction generateur
+        window.onload =()=>{
+                qrcode.innerHTML=""//initialiser le contenu de qr code
+                new QRCode(qrcode,'<%= cne %>');/*qr_text.value*/
+                remarque.innerHTML="S'il vous plait télécharger et imprimer votre  badge  ";
+        }
+        //imprimer
+        function imprimer(){
+            imprime.style.display="none";
+            remarque.style.display="none";
+            logo.style.display="none";
+            print();
+        }
+    </script>
+    <script src="qrcode.min.js"></script>
+    
+</body>
+</html>

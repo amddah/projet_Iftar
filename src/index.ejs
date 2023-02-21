@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner QR code</title>
+    <script src="html5-qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        #khofaa{
+            display: none;
+            font-weight: 500;
+            font-size: large;
+            background-color: #000;
+            color: #fff;
+            border-radius: 10px;
+            border: none;
+        }
+        #valider{
+            display: none;
+            font-size: large;
+            font-weight: 500;
+            background-color: #000;
+            color:#fff;
+            border-radius: 10px;
+            padding: auto;
+            border: none;
+        }
+        #logout {
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            color: #4CAF50;
+            font-size: 16px;
+            font-weight: 900;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container2 {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      label {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+
+      input[type="password"] {
+        margin-top: 10px;
+        padding: 10px;
+        font-size: 18px;
+      }
+
+      #submit-button,#STJ,.badg {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: blue;
+        color: white;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #pwrdbtn{
+        bottom: 0;
+        left: 0;
+        position: absolute;
+      }
+      
+    </style>
+</head>
+<body>
+    <form action="/logout" method="post">
+        <input type="submit" value="Déconnexion"id="logout">
+    </form>
+    <main>
+        <div id="reader"></div>
+        <form action="/khofa" method="post">
+            <input type="hidden" name="cnekhofa" id="cnekhoka" >
+            <input type="submit" id="khofaa" value="khofa">
+        </form>
+        <div id="result"></div>
+        <form action="/valider" method="post">
+            <input type="hidden" name="cneValide" id="cneValide">
+            <input type="submit" id="valider" value="valider">
+        </form>        
+    </main>
+    <!-- affiche Modification de password-->
+        <input type="submit" value="::"id="pwrdbtn">
+
+    <!--Modification de password-->
+    <div class="container2">
+        <h1>Modification de mot de passe</h1>
+        <form action="/modifypwrd" method="post">
+              <label for="oldpassword">Ancien mot de passe :</label>
+              <input id="oldpassword"name="oldpassword" type="password"/><br>
+              <label for="newpassword">Nouveau mot de passe :</label>
+              <input id="newpassword"name="newpassword" type="password"/><br>
+              <input type="submit" id="submit-button"valu="Soumettre"></input>
+        </form>
+        <form action="/ST_jour"method="post">
+            <input type="submit" id="STJ"value="ST_jour"></input>
+        </form>
+        <form action="/badgelogin"method="post">
+            <input type="submit"value="Badge"class="badg"></input>
+        </form>
+      </div>
+      
+    <script>
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////       
+      //scanner
+        const scanner=new Html5QrcodeScanner('reader',{
+            qrbox:{
+                width:500,//250,
+                height:500,//250,
+            },
+            fps:20,
+        });
+        scanner.render(success,error);
+
+        function success(result){
+            var stockCNE='',stock_Situation_Day=-2,khofa=-2,cmpt=0;
+            document.getElementById('result').style.backgroundColor="#f2f2f2";
+            document.getElementById("logout").style.display="none";
+            '<% for(i=0;i<CNE.length;i++) {%>'
+            stockCNE='<%= CNE[i].CNE%>'  
+            if(stockCNE==result){
+                stock_Situation_Day='<%= CNE[i].jour%>'
+                khofa='<%= CNE[i].khofa%>'
+                cmpt=1;
+                //success
+                if(stock_Situation_Day=="0"){
+                document.getElementById('result').innerHTML=' <h2> Success! </h2><br> <p>'+result+'</p><p> binif : '+stock_Situation_Day+'</p> ';
+                document.getElementById('result').style.color="green";
+                document.getElementById('cneValide').value=stockCNE;
+                document.getElementById("valider").style.display="flex";
+                 }
+                //deja benificier
+                else{
+                    if(stock_Situation_Day=="1"){
+                    document.getElementById('result').innerHTML=' <h2> Failed! </h2><br> <p>'+result+'</p><p> binif : '+stock_Situation_Day+'</p> ';
+                    document.getElementById('result').style.color="red";
+                    document.getElementById("valider").style.display="flex";
+                    }
+                }
+                //tester khofa
+                if(khofa=="0"){
+                    document.getElementById('cnekhoka').value=stockCNE;
+                    document.getElementById("khofaa").style.display="flex";
+                }
+            }
+            '<%}%>'
+            if(!cmpt){
+                document.getElementById('result').innerHTML=" <h2> Failed! ce CNE n'est pas dans la base de donnée  </h2><br> <p>"+result+'</p> ';
+                document.getElementById('result').style.color="red";
+            }
+            scanner.clear();
+            document.getElementById('reader').remove();
+        }
+    //fonction erreur
+        function error(err){
+            console.error(err);
+        }
+    //afficter modifier password    
+        document.getElementById("pwrdbtn").addEventListener("click", ()=>{
+             if('<%= idAdmin[0].id %>'=="1"){
+                document.querySelector(".container2").style.display="flex";
+            }
+            else{
+                alert("cette partie est pour les admins seulement");
+            }
+        })
+    </script>
+</body>
+</html>
